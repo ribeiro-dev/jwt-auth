@@ -1,6 +1,8 @@
 import express from "express";
 import "dotenv/config"; // import and invoke
 
+import UsersController from 'src/UsersController';
+
 
 const PORT = process.env.PORT || 3000;
 const app = express();

@@ -1,5 +1,6 @@
 import express from "express";
 import jwt from "jsonwebtoken";
+import checkJWT from "./middlewares/auth.js";
 import "dotenv/config"; // import and invoke
 
 
@@ -23,7 +24,7 @@ const users = [
 
 
 // Routes
-app.get('/', (req, res) => {
+app.get('/', checkJWT, (req, res) => {
     res.json({message: 'Hello World!'});
 })
 

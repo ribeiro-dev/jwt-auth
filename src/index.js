@@ -1,7 +1,9 @@
 import express from "express";
+// import jwt from "jsonwebtoken";
 import "dotenv/config"; // import and invoke
 
 
+// const JWT_SECRET = process.env.JWT_SECRET;
 const PORT = process.env.PORT || 3000;
 const app = express();
 
@@ -34,7 +36,7 @@ app.post('/login', (req, res) => {
         return res.status(404).json({ message: 'Email não encontrado' });
     };
 
-    if (user.email != email || user.password != password) {
+    if (user.password != password) {
         return res.status(401).json({ message: 'Email e/ou senha inválidos' });
     }
 

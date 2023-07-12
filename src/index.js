@@ -1,7 +1,10 @@
 import express from "express";
+import jwt from "jsonwebtoken";
+import checkJWT from "./middlewares/auth.js";
 import "dotenv/config"; // import and invoke
 
 
+const JWT_SECRET = process.env.JWT_SECRET;
 const PORT = process.env.PORT || 3000;
 const app = express();
 
@@ -21,7 +24,7 @@ const users = [
 
 
 // Routes
-app.get('/', (req, res) => {
+app.get('/', checkJWT, (req, res) => {
     res.json({message: 'Hello World!'});
 })
 
@@ -34,11 +37,16 @@ app.post('/login', (req, res) => {
         return res.status(404).json({ message: 'Email não encontrado' });
     };
 
-    if (user.email != email || user.password != password) {
+    if (user.password != password) {
         return res.status(401).json({ message: 'Email e/ou senha inválidos' });
     }
 
-    res.json({ message: 'Logged in!' });
+    const accessToken = jwt.sign({ email: user.email }, JWT_SECRET, {expiresIn: 3000});
+
+    res.json({
+        message: 'Logged in!',
+        token: accessToken
+    });
 })
 
 app.listen(PORT, () => {
